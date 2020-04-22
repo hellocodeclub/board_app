@@ -1,0 +1,46 @@
+<!-- Create a task Modal -->
+
+<div class="modal fade" id="createTaskModalCenter" tabindex="-1" role="dialog" aria-labelledby="createTaskModalCenterLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="createTaskModalCenterLabel">New Task</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form>
+                    <div class="form-group">
+                        <label for="title-name" class="col-form-label">Title</label>
+                        <input type="text" class="form-control" id="title-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="project-name" class="col-form-label">Project</label>
+                        <input type="text" class="form-control" id="project-name">
+                    </div>
+                    <div class="form-group">
+                        <label for="estimated-hours" class="col-form-label">Estimated Hours</label>
+                        <input type="text" class="form-control" id="estimated-hours">
+                    </div>
+                    <div class="form-group">
+                        <label for="assigned-person" class="col-form-label">Assigned</label>
+                        <input type="text" class="form-control" id="assigned-person">
+                    </div>
+                    <div class="form-group">
+                        <label for="status-task" class="col-form-label">Status</label>
+                        <input type="text" class="form-control" id="status-task">
+                    </div>
+                    <div class="form-group">
+                        <label for="description-text" class="col-form-label">Description</label>
+                        <textarea class="form-control" id="description-text"></textarea>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary">Send message</button>
+            </div>
+        </div>
+    </div>
+</div>

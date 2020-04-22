@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% load static %}
+
+{% block content %}
+
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+
+        <!-- Main Content -->
+        <div id="content">
+
+            {% include 'partials/_topbar.html' %}
+
+            <!-- Begin Page Content -->
+            <div class="container-fluid">
+
+                <!-- Page Heading -->
+                <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                    <h1 class="h3 mb-0 text-gray-800">Complete all templates</h1>
+                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
+                        <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
+                </div>
+
+                <!-- Progress -->
+                <div class="row">
+                    <div class="col-xl-3 col-md-6 mb-4">
+                        <div class="card border-left-info shadow h-100 py-2">
+                            <div class="card-body">
+                                <div class="row no-gutters align-items-center">
+                                    <div class="col mr-2">
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                                        <div class="row no-gutters align-items-center">
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                            </div>
+                                            <div class="col">
+                                                <div class="progress progress-sm mr-2">
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-auto">
+                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- End Progress -->
+
+                <!-- Content -->
+                <div class="row justify-content-md-center">
+                    <div class="col-sm less-padding">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6>Open</h6>
+                            </div>
+                            <div class="card-body less-padding">
+                                <div class="card bg-info text-white shadow ">
+                                    <div class="card-body less-padding">
+                                        <h6 class="text-xs"><a class="text-white" href="">Removing unused css</a></h6>
+                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                                <div class="card bg-info text-white shadow ">
+                                    <div class="card-body less-padding">
+                                        <h6 class="text-xs"><a class="text-white" href="">Adding a new style</a></h6>
+                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm less-padding">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6>Ready</h6>
+                            </div>
+                            <div class="card-body less-padding">
+                                <div class="card bg-warning text-white shadow ">
+                                    <div class="card-body less-padding">
+                                        <h6 class="text-xs"><a class="text-white" href="">Define the dasboard template</a></h6>
+                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm less-padding">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6>In Progress</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>stuff</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm less-padding">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6>Test</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>stuff</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm less-padding">
+                        <div class="card shadow mb-4">
+                            <div class="card-header">
+                                <h6>Done</h6>
+                            </div>
+                            <div class="card-body">
+                                <p>stuff</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- End Content -->
+
+                </div>
+                <!-- /.container-fluid -->
+
+            </div>
+            <!-- End of Main Content -->
+            {% include 'partials/_footer.html' %}
+
+
+        </div>
+        <!-- End of Content Wrapper -->
+
+    </div>
+    <!-- End of Page Wrapper -->
+
+    <!-- Scroll to Top Button-->
+    <a class="scroll-to-top rounded" href="#page-top">
+        <i class="fas fa-angle-up"></i>
+    </a>
+    {% include 'partials/_create_task_modal.html' %}
+    {% include 'partials/_start_cycle_modal.html' %}
+    {% include 'partials/_logout_modal.html' %}
+
+{% endblock %}
