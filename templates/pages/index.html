@@ -53,82 +53,35 @@
 
                 <!-- Content -->
                 <div class="row justify-content-md-center">
+                    {% for group in task_groups %}
                     <div class="col-sm less-padding">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <h6>Open</h6>
+                                <h6>{{ group.status }} </h6>
                             </div>
-                            <div class="card-body less-padding">
-                                <div class="card bg-info text-white shadow ">
-                                    <div class="card-body less-padding">
-                                        <h6 class="text-xs"><a class="text-white" href="">Removing unused css</a></h6>
-                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                                <div class="card bg-info text-white shadow ">
-                                    <div class="card-body less-padding">
-                                        <h6 class="text-xs"><a class="text-white" href="">Adding a new style</a></h6>
-                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>Ready</h6>
-                            </div>
-                            <div class="card-body less-padding">
-                                <div class="card bg-warning text-white shadow ">
-                                    <div class="card-body less-padding">
-                                        <h6 class="text-xs"><a class="text-white" href="">Define the dasboard template</a></h6>
-                                        <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
-                                            <i class="fas fa-arrow-right"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>In Progress</h6>
-                            </div>
-                            <div class="card-body">
-                                <p>stuff</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>Test</h6>
-                            </div>
-                            <div class="card-body">
-                                <p>stuff</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>Done</h6>
-                            </div>
-                            <div class="card-body">
-                                <p>stuff</p>
-                            </div>
-                        </div>
-                    </div>
 
-                    <!-- End Content -->
-
+                            <div class="card-body less-padding">
+                                {% if group.tasks %}
+                                    {% for task in group.tasks %}
+                                    <div class="card cbg-info text-white shadow ">
+                                        <div class="card-body less-padding">
+                                            <h6 class="text-xs"><a class="text-white" href="">{{ task.title }}</a></h6>
+                                            <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
+                                                <i class="fas fa-arrow-right"></i>
+                                            </a>
+                                        </div>
+                                    </div>
+                                    {% endfor %}
+                                {% else %}
+                                    <p>No tasks</p>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
                 </div>
+                <!-- End Content -->
+
                 <!-- /.container-fluid -->
 
             </div>
