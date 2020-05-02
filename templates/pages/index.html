@@ -17,32 +17,32 @@
 
                 <!-- Page Heading -->
                 <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Complete all templates</h1>
+                    <h1 class="h3 mb-0 text-gray-800">Goal: Update the blog to new alien theme</h1>
                     <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
                         <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
                 </div>
 
-                <!-- Progress -->
+                <!-- ProgressBar: it needs a  'board_progress_summary' field -->
                 <div class="row">
                     <div class="col-xl-3 col-md-6 mb-4">
                         <div class="card border-left-info shadow h-100 py-2">
                             <div class="card-body">
                                 <div class="row no-gutters align-items-center">
                                     <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Tasks</div>
+                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed(in hours)</div>
                                         <div class="row no-gutters align-items-center">
                                             <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">50%</div>
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_percentage}}%</div>
                                             </div>
                                             <div class="col">
                                                 <div class="progress progress-sm mr-2">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{board_progress_summary.completed_percentage}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                                 </div>
                                             </div>
+                                            <div class="col-auto">
+                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
+                                            </div>
                                         </div>
-                                    </div>
-                                    <div class="col-auto">
-                                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
                                     </div>
                                 </div>
                             </div>
@@ -53,19 +53,22 @@
 
                 <!-- Content -->
                 <div class="row justify-content-md-center">
-                    {% for group in task_groups %}
+                    {% for task_group in tasks_grouped_by_status %}
                     <div class="col-sm less-padding">
                         <div class="card shadow mb-4">
                             <div class="card-header">
-                                <h6>{{ group.status }} </h6>
+                                <h6>{{ task_group.status }} </h6>
                             </div>
 
                             <div class="card-body less-padding">
-                                {% if group.tasks %}
-                                    {% for task in group.tasks %}
-                                    <div class="card cbg-info text-white shadow ">
+                                {% if task_group.tasks %}
+                                    {% for task in task_group.tasks %}
+                                    <div class="card bg-info text-white shadow ">
                                         <div class="card-body less-padding">
-                                            <h6 class="text-xs"><a class="text-white" href="">{{ task.title }}</a></h6>
+                                            <h6 class="text-s"><a class="text-white" href=""><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
+                                            <span style="background-color:{{task.project.color}}">{{task.project}}</span>
+                                            <span class="circle">{{task.estimated_hours}}h</span>
+
                                             <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
                                                 <i class="fas fa-arrow-right"></i>
                                             </a>

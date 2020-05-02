@@ -1,7 +1,10 @@
 from django.db import models
+from django.db.models import Sum
+from django.db.models.functions import Coalesce
 from datetime import datetime
 from projects.models import Project,Workspace
 from users.models import User
+from tasks.choices import status_choices
 
 # Create your models here.
 
@@ -38,23 +41,34 @@ def get_dictionary_tasks_by_status():
     done = Task.objects.filter(status='DONE')
     list = []
     list.append({
-        'status': 'open',
+        'status': status_choices['open'],
         'tasks': open_tasks
     })
     list.append({
-        'status': 'ready',
+        'status': status_choices['ready'],
         'tasks': ready_tasks
     })
     list.append({
-        'status': 'in_progress',
+        'status': status_choices['in_progress'],
         'tasks': in_progress_tasks
     })
     list.append({
-        'status': 'test',
+        'status': status_choices['test'],
         'tasks': test
     })
     list.append({
-        'status': 'done',
+        'status': status_choices['done'],
         'tasks': done
     })
     return list
+
+
+def calculate_completed_hours():
+    completed_tasks = Task.objects.filter(status='DONE').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    total_tasks = Task.objects.aggregate(Sum('estimated_hours'))
+    board_progress_summary = {
+        'completed_tasks': completed_tasks['hours'],
+        'total_tasks': total_tasks['estimated_hours__sum'],
+        'completed_percentage': int((completed_tasks['hours']/total_tasks['estimated_hours__sum'])*100)
+    }
+    return board_progress_summary
