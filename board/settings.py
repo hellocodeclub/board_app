@@ -34,7 +34,7 @@ INSTALLED_APPS = [
     'pages.apps.PagesConfig',
     'projects.apps.ProjectsConfig',
     'tasks.apps.TasksConfig',
-    'users.apps.UsersConfig',
+    'accounts.apps.AccountsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'board.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'boardappdb',
+        'NAME': 'boardapp',
         'USER': 'postgres',
         'PASSWORD': '0B0480284000323154405',
         'HOST': 'localhost'
@@ -133,3 +133,9 @@ STATICFILES_DIRS = [
 # Media Folder Settings
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
+
+# MEssages
+from django.contrib.messages import constants as messages
+MESSAGE_TAGS = {
+    messages.ERROR: 'danger'
+}

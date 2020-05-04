@@ -3,107 +3,204 @@
 {% load static %}
 
 {% block content %}
+<header id="header">
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
-
-        <!-- Main Content -->
-        <div id="content">
-
-            {% include 'partials/_topbar.html' %}
-
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Goal: Update the blog to new alien theme</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
-                        <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
-                </div>
-
-                <!-- ProgressBar: it needs a  'board_progress_summary' field -->
-                <div class="row">
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed(in hours)</div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_percentage}}%</div>
-                                            </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm mr-2">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{board_progress_summary.completed_percentage}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!-- End Progress -->
-
-                <!-- Content -->
-                <div class="row justify-content-md-center">
-                    {% for task_group in tasks_grouped_by_status %}
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>{{ task_group.status }} </h6>
-                            </div>
-
-                            <div class="card-body less-padding">
-                                {% if task_group.tasks %}
-                                    {% for task in task_group.tasks %}
-                                    <div class="card bg-info text-white shadow ">
-                                        <div class="card-body less-padding">
-                                            <h6 class="text-s"><a class="text-white" href=""><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
-                                            <span style="background-color:{{task.project.color}}">{{task.project}}</span>
-                                            <span class="circle">{{task.estimated_hours}}h</span>
-
-                                            <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
-                                                <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <p>No tasks</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <!-- End Content -->
-
-                <!-- /.container-fluid -->
-
-            </div>
-            <!-- End of Main Content -->
-            {% include 'partials/_footer.html' %}
-
-
+    <div class="container header-holder">
+        <div class="logo">
+            <a href="/"><img src="/images/logo-new.png" alt="PayLoadz sell downloads"></a>
         </div>
-        <!-- End of Content Wrapper -->
-
+        <div class="top-side-block">
+            <a class="btn btn-primary btn-lg" href="{% url 'login' %}" role="button">Sign In</a>
+            <a class="btn btn-default store" href="{% url 'register' %}" role="button">Register</a>
+        </div>
     </div>
-    <!-- End of Page Wrapper -->
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    {% include 'partials/_create_task_modal.html' %}
-    {% include 'partials/_start_cycle_modal.html' %}
-    {% include 'partials/_logout_modal.html' %}
+
+
+    <div class="container banner text-center">
+        <h1>Plan work and achieve your goals with a flexible dashboard</h1>
+        <p>
+            Board offers a planning service for anyone to plan their work and get started in minutes.
+        </p>
+        <div class="btn-holder">
+            <a class="btn btn-default" role="button" href="{% url 'register' %}" >Create Account</button>
+            <a class="btn btn-default features" href="#features" role="button">Features</a>
+        </div>
+    </div>
+
+    <div class="img-holder">
+        <img src="{% static 'img/landing-background.png' %}" width="1280" height="520" alt="image">
+    </div>
+</header>
+<div id="main" role="main">
+
+    <section id="noscript" class="container alert alert-warning noscript" style="display: none;">
+        <noscript>
+            For full functionality of this site it is necessary to enable JavaScript.
+            <a href="http://store.payloadz.com/steps.aspx" target="_blank">Click Here</a>
+            to read instructions how to enable JavaScript in your web browser.
+        </noscript>
+    </section>
+    <script> $("#noscript").hide();</script>
+
+    <a id="pricing"></a>
+    <section class="container about-and-pricing">
+        <div class="row">
+            <div class="col-sm-7">
+                <div class="content">
+                    <h2>Our Download Selling Service</h2>
+                    <p>Since 2002, we have provided the best service to sell downloadable items such as software, ebooks, music, movies, digital art, manuals, articles, crafts, templates, files, and anything else that can be downloaded. Our automated service delivers your products to your  customers instantly after payment. Customers pay you directly into your own PayPal account, no waiting for deposits or transfers- get paid instantly! <a href="#" data-toggle="modal" data-target="#myModal2" data-title="Try it now.">Sign Up.</a></p>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal2" data-title="">Create Account<span class="icon"><span class="icon-right-arrow"></span></span></button>
+                </div>
+            </div>
+            <div class="col-sm-5">
+                <div class="block-pricing text-center">
+                    <div class="block-wrap">
+                        <h3>14 Day Full Trial for just $1</h3>
+                        <strong class="price">$19.95</strong>
+                        <p>per month</p>
+                    </div>
+                    <ul class="price-holder">
+                        <li>
+                            <strong class="price">2.9% + $0.29</strong>
+                            <p>per transaction, billed monthly</p>
+                        </li>
+                        <li>
+                            <strong class="price">4.9% + $0.05</strong>
+                            <p>for orders less than two dollars</p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="block-statistics text-center">
+        <div class="container">
+            <div class="row">
+                <div class="col col-sm-4">
+                    <strong class="price">1,000,000+</strong>
+                    <p>products for sale</p>
+                </div>
+                <div class="col col-sm-4">
+                    <strong class="price">$82,000,000+</strong>
+                    <p>in seller revenue</p>
+                </div>
+                <div class="col col-sm-4">
+                    <strong class="price">100,000+</strong>
+                    <p>downloads this month</p>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="container features-holder">
+        <div class="title text-center">
+            <a id="features"></a>
+            <h2>Features</h2>
+
+            <p>No other service has as many features for new and experienced sellers. <a href="#" data-toggle="modal" data-target="#myModal2" data-title="Sign Up">Create Account</a></p>
+        </div>
+        <div class="row">
+            <ul class="features col-sm-6">
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico01.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Increase sales with <a href="#" data-toggle="modal" data-target="#myModal2" data-title="our service" style="color: #1E1F21;text-decoration:none;border-bottom: 1px dashed #999;display: inline;">our service</a></h3>
+                        <p>Sellers who choose PayLoadz see an average growth of over 1,000% in sales from their first month using our service.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico03.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Secure storage &amp; automated delivery</h3>
+                        <p>Downloads are tracked carefully using a complex algorithm which helps prevent download abuse and fraudulent transactions.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico06.svg" width="55" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Several payment systems</h3>
+                        <p>Customer choice is what drives sales conversions. They need to be able to pay in a variety of methods. Credit cards, debit card, eChecks, ACH transfers.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico08.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Many countries &amp; currencies supported</h3>
+                        <p>With support for over 190 countries and over 20 currencies, our service is truly international.<a href="#" data-toggle="modal" data-target="#myModal2" data-title="our service"> Sell and deliver your downloads</a> anywhere, at any time.</p>
+                    </div>
+                </li>
+            </ul>
+            <ul class="features col-sm-6">
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico02.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Sell anywhere online</h3>
+                        <p>Our system works everywhere- your site, Facebook, twitter, our store, blogs, etc. We provide you with simple copy and paste links and button code.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico05.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Supports eBay auctions</h3>
+                        <p>Digital Good Auctions are a great way to market and sell your downloads. eBay has a huge market presence and our service plugs into it seamlessly.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico07.svg" width="30" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Bulk product import</h3>
+                        <p>Do you have a lot of digital products to sell? If so, you can <a href="#" data-toggle="modal" data-target="#myModal2" data-title="easily upload">easily upload</a> them in a single step using our bulk product import system.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="img-holder">
+                        <img src="/images/ico09.svg" width="50" height="43" alt="image description">
+                    </div>
+                    <div class="description">
+                        <h3>Turn key affiliate system</h3>
+                        <p>Every PayLoadz account comes with a turn-key affiliate marketing system which handles affiliate management and affiliate product promotion.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </section>
+    <section class="container block-more-features">
+        <div class="title text-center">
+            <h3>More great features</h3>
+        </div>
+        <ul class="features-list">
+            <li><span class="icon icon-arrow"></span>No product limits. Sell an unlimited number of products. From one item or thousands.</li>
+            <li><span class="icon icon-arrow"></span>Send free downloads. Send one or more products to a single or multiple recipients easily.</li>
+            <li><span class="icon icon-arrow"></span>Export product and sales history. Take your information with you- it's yours.</li>
+            <li><span class="icon icon-arrow"></span>Discount system. Apply discounts to your items or give out loyalty codes to boost sales.</li>
+            <li><span class="icon icon-arrow"></span>Multi file products. A product can have one or more files. It's easy to attach as many files as you like to a product.</li>
+            <li><span class="icon icon-arrow"></span>Easy file upload. Upload your files using our powerful website interface, or use the FTP option if you like.</li>
+            <li><span class="icon icon-arrow"></span>Sample and preview files. Attach product samples or previews to let your customers try before buying.</li>
+            <li><span class="icon icon-arrow"></span>Conversion tracking enabled. Use AdWords or third party analytics tracking programs to measure your success.</li>
+            <li><span class="icon icon-arrow"></span>Mailing list integrations. Have your customer email information automatically sent to mail services like MailChimp.</li>
+        </ul>
+        <div class="block-holder text-center">
+            <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#myModal2" data-title="">Create Account<span class="icon icon"><span class="icon icon-right-arrow"></span></span></button>
+            <p>Have questions? <a href="/contact.aspx" data-title="Contact us" class="support">Contact our support</a></p>
+        </div>
+    </section>
+
+</div>
+
+{% include 'partials/_landing_footer.html' %}
 
 {% endblock %}

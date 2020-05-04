@@ -1,0 +1,91 @@
+{% extends 'logged_base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+        <!-- Topbar -->
+        {% include 'partials/_topbar.html' %}
+        <!-- End of Topbar -->
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Projects</h1>
+            </div>
+
+            <div class="row">
+
+               <div class="col-lg-10">
+                    <div class="card shadow mb-4">
+                        <!-- Card Header - Accordion -->
+                        {% if projects %}
+                            {% for project in projects %}
+                            <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                <h6 class="m-0 font-weight-bold text-primary">{{project.title}}</h6>
+                            </a>
+                            <!-- Card Content - Collapse -->
+                            <div class="collapse show" id="collapseCardExample">
+                            <div class="card-body">
+                                <div class="col-lg-12">
+                                    <h4 class="small font-weight-bold">State</h4>
+                                    <div class="progress mb-4">
+                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 20%" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100">Ready 20%</div>
+                                        <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">Warning 10%</div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-10">
+                                    <div class="card bg-info text-white shadow ">
+                                    <div class="card-body less-padding">
+                                        <span class="text-m"><a class="text-white" href=""><b>1</b> - Something interesting</a></span>
+                                        <span class="float-right" style="background-color:green">Open</span>
+                                        <span class="circle float-right">1h</span>
+
+                                        </div>
+                                </div>
+                                    <div class="card bg-info text-white shadow ">
+                                    <div class="card-body less-padding">
+                                        <span class="text-m"><a class="text-white" href=""><b>1</b> - Something interesting</a></span>
+                                        <span class="float-right" style="background-color:red">In Progress</span>
+                                        <span class="circle float-right">1h</span>
+
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+
+                        </div>
+                            {% endfor %}
+                        {% else %}
+                        <div class="card-body">
+                            <div class="col-lg-12"> No projects created yet </div>
+                        </div>
+                        {% endif %}
+                    </div>
+
+                </div>
+
+               <div class="col-lg-2">
+                   <div class="card">
+                       <div class="card-body">
+                           <ul class="nav felx-column">
+                               <li class="nav-item">
+                                   <a class="nav-link" href="#">One project</a>
+                                   <a class="nav-link" href="">Another project</a>
+                               </li>
+                           </ul>
+                       </div>
+                   </div>
+
+               </div>
+
+            </div>
+
+        </div>
+    </div>
+
+</div>
+{% endblock %}

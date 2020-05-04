@@ -11008,3 +11008,15 @@ div.card-body.less-padding{
     padding-left: .75rem;
 }
 
+.card-body span{
+     border-radius: 3px;
+     padding: 3px;
+}
+
+.card-body span.circle{
+    background-color: white;
+    color: grey;
+    border-radius: 30px;
+    padding: 3px;
+}
+
