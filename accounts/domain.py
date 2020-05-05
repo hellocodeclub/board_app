@@ -1,4 +1,7 @@
 from django.contrib.auth.models import User
+from .models import Account
+from projects.models import Workspace,Project
+from django.contrib import auth
 
 class AccountRegistration:
     def __init__(self,request):
@@ -16,5 +19,16 @@ class AccountRegistration:
                 return (False,'Email is being used')
             else:
                 return (True,'You are now registered and can log in')
+
+    def register(self, request, user):
+        auth.login(request, user)
+        account = Account(username=user.email, email=user.email)
+        account.save()
+        workspace = Workspace(account=account)
+        workspace.save()
+        default_project = Project(title='Default',description='',workspace=workspace,color='#FFFFFF')
+        default_project.save()
+
+
 
 

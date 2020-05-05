@@ -20,16 +20,18 @@
             <div class="row">
 
                <div class="col-lg-10">
-                    <div class="card shadow mb-4">
-                        <!-- Card Header - Accordion -->
-                        {% if projects %}
-                            {% for project in projects %}
+                   {% if projects %}
+                    {% for project in projects %}
+                        <div class="card shadow mb-4">
+                            <!-- Card Header - Accordion -->
+
                             <a href="#collapseCardExample" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                <h6 class="m-0 font-weight-bold text-primary">{{project.title}}</h6>
+                                <h6 class="m-0 font-weight-bold text-primary">{{project.project.title}}</h6>
                             </a>
                             <!-- Card Content - Collapse -->
                             <div class="collapse show" id="collapseCardExample">
                             <div class="card-body">
+                                {% if project.tasks %}
                                 <div class="col-lg-12">
                                     <h4 class="small font-weight-bold">State</h4>
                                     <div class="progress mb-4">
@@ -37,52 +39,52 @@
                                         <div class="progress-bar progress-bar-warning" role="progressbar" style="width:10%">Warning 10%</div>
                                     </div>
                                 </div>
+                                {% endif %}
                                 <div class="col-lg-10">
-                                    <div class="card bg-info text-white shadow ">
-                                    <div class="card-body less-padding">
-                                        <span class="text-m"><a class="text-white" href=""><b>1</b> - Something interesting</a></span>
-                                        <span class="float-right" style="background-color:green">Open</span>
-                                        <span class="circle float-right">1h</span>
-
+                                    {% if project.tasks %}
+                                        {% for task in project.tasks %}
+                                        <div class="card bg-info text-white shadow ">
+                                            <div class="card-body less-padding">
+                                                <span class="text-m"><a class="text-white" href=""><b>{{task.id}}</b> - {{task.title}}</a></span>
+                                                <span class="float-right" style="background-color:green">{{task.status}}</span>
+                                                <span class="circle float-right">{{task.estimated_hours}}h</span>
+                                            </div>
                                         </div>
-                                </div>
-                                    <div class="card bg-info text-white shadow ">
-                                    <div class="card-body less-padding">
-                                        <span class="text-m"><a class="text-white" href=""><b>1</b> - Something interesting</a></span>
-                                        <span class="float-right" style="background-color:red">In Progress</span>
-                                        <span class="circle float-right">1h</span>
+                                        {% endfor %}
+                                    {% else %}
+                                        No tasks created in this project
+                                    {% endif %}
 
-                                    </div>
-                                </div>
                                 </div>
                             </div>
 
                         </div>
-                            {% endfor %}
-                        {% else %}
-                        <div class="card-body">
-                            <div class="col-lg-12"> No projects created yet </div>
                         </div>
-                        {% endif %}
+                    {% endfor %}
+               {% else %}
+                    <div class="card-body">
+                        <div class="col-lg-12"> No projects created yet </div>
+                    </div>
+               {% endif %}
+                    </div>
+                <div class="col-lg-2">
+                    <div class="card">
+                        <div class="card-body">
+                            <ul class="nav felx-column">
+                                <li class="nav-item">
+                                    <a class="nav-link" href="#">One project</a>
+                                    <a class="nav-link" href="">Another project</a>
+                                </li>
+                            </ul>
+                        </div>
                     </div>
 
                 </div>
-
-               <div class="col-lg-2">
-                   <div class="card">
-                       <div class="card-body">
-                           <ul class="nav felx-column">
-                               <li class="nav-item">
-                                   <a class="nav-link" href="#">One project</a>
-                                   <a class="nav-link" href="">Another project</a>
-                               </li>
-                           </ul>
-                       </div>
-                   </div>
-
-               </div>
-
             </div>
+
+
+
+        </div>
 
         </div>
     </div>

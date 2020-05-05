@@ -29,7 +29,7 @@ def register(request):
         if(registrationResult_Tuple_with_BooleanAndMessage[0]):
             user= User.objects.create_user(username=registration.email, password=registration.password,
                                            email=registration.email, first_name=registration.first_name,last_name=registration.last_name)
-            auth.login(request, user)
+            registration.register(request, user)
             messages.success(request, registrationResult_Tuple_with_BooleanAndMessage[1])
             return redirect('dashboard')
         else:
@@ -39,7 +39,10 @@ def register(request):
         return render(request,'accounts/register.html')
 
 def logout(request):
-    return redirect('index')
+    if request.method =='POST':
+        auth.logout(request)
+        messages.success(request,'You are now logged out')
+        return redirect('index')
 
 def dashboard(request):
     tasks_groups = get_dictionary_tasks_by_status()

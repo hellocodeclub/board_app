@@ -49,6 +49,10 @@
     }
   });
 
+  setTimeout(function(){
+      $('#message').fadeOut('slow')
+  }, 3000);
+
   // Smooth scrolling using jQuery easing
   $(document).on('click', 'a.scroll-to-top', function(e) {
     var $anchor = $(this);
