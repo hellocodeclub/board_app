@@ -7,3 +7,7 @@ status_choices = {
 }
 
 status_order = ['OPEN','READY','IN_PROGRESS','TEST','DONE']
+
+def next_state(status):
+    status_position = status_order.index(status.upper())
+    return status_order[status_position+1]

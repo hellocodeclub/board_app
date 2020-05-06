@@ -76,3 +76,19 @@ def calculate_completed_hours():
         'completed_percentage': calculate_percentage(completed_tasks['hours'],total_tasks['hours'])
     }
     return board_progress_summary
+
+def caclulate_status_percentages(project):
+    total_tasks_hours = Task.objects.filter(project=project).aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    open_tasks_hours = Task.objects.filter(project=project).filter(status='OPEN').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    ready_tasks_hours = Task.objects.filter(project=project).filter(status='READY').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    in_progress_tasks_hours = Task.objects.filter(project=project).filter(status='IN_PROGRESS').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    test_hours = Task.objects.filter(project=project).filter(status='TEST').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    done_hours = Task.objects.filter(project=project).filter(status='DONE').aggregate(hours=Coalesce(Sum('estimated_hours'),0))
+    status = {
+        'open_tasks_hours': calculate_percentage(open_tasks_hours['hours'],total_tasks_hours['hours']),
+        'ready_tasks_hours': calculate_percentage(ready_tasks_hours['hours'],total_tasks_hours['hours']),
+        'in_progress_tasks_hours': calculate_percentage(in_progress_tasks_hours['hours'],total_tasks_hours['hours']),
+        'test_hours': calculate_percentage(test_hours['hours'],total_tasks_hours['hours']),
+        'done_hours': calculate_percentage(done_hours['hours'],total_tasks_hours['hours'])
+    }
+    return status

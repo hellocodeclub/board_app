@@ -63,15 +63,26 @@
                             <div class="card-body less-padding">
                                 {% if task_group.tasks %}
                                     {% for task in task_group.tasks %}
-                                    <div class="card bg-info text-white shadow ">
+                                    <div class="task-card card bg-info text-white shadow ">
                                         <div class="card-body less-padding">
-                                            <h6 class="text-s"><a class="text-white" href=""><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
+                                            <h6 class="text-s">
+                                                <a class="text-white" href="" data-toggle="modal" data-target="#createTaskModalCenter"
+                                                   data-tasktitle="{{ task.title }}"
+                                                   data-status="{{ task.status }}"
+                                                   data-description = {{task.description}}
+                                                   data-projectname="{{ task.project }}"
+                                                   data-estimated_hours="{{ task.estimated_hours }}"
+                                            ><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
                                             <span style="background-color:{{task.project.color}}">{{task.project}}</span>
                                             <span class="circle">{{task.estimated_hours}}h</span>
 
-                                            <a href="#" class="btn btn-primary btn-circle btn-sm float-right">
+                                            <a href="javascript:{document.getElementById('updatetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm float-right">
                                                 <i class="fas fa-arrow-right"></i>
                                             </a>
+                                            <form id="updatetask{{task.id}}" action="{% url 'task-move-next-state' %}" method="POST">
+                                                {% csrf_token %}
+                                                <input name="task_id" value="{{task.id}}" type="hidden">
+                                            </form>
                                         </div>
                                     </div>
                                     {% endfor %}
