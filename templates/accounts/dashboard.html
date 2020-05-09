@@ -4,44 +4,43 @@
 
 {% block content %}
 
-    <!-- Content Wrapper -->
-    <div id="content-wrapper" class="d-flex flex-column">
+<!-- Content Wrapper -->
+<div id="content-wrapper" class="d-flex flex-column">
 
-        <!-- Main Content -->
-        <div id="content">
+    <!-- Main Content -->
+    <div id="content">
 
-            {% include 'partials/_topbar.html' %}
+        {% include 'partials/_topbar.html' %}
 
-            <!-- Begin Page Content -->
-            <div class="container-fluid">
-                {% include 'partials/_alerts.html' %}
-                <!-- Page Heading -->
-                <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                    <h1 class="h3 mb-0 text-gray-800">Goal: Update the blog to new alien theme</h1>
-                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
-                        <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
-                </div>
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            {% include 'partials/_alerts.html' %}
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Goal: Update the blog to new alien theme</h1>
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
+                    <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
+            </div>
 
-                <!-- ProgressBar: it needs a  'board_progress_summary' field -->
-                <div class="row">
-                    <div class="col-xl-3 col-md-6 mb-4">
-                        <div class="card border-left-info shadow h-100 py-2">
-                            <div class="card-body">
-                                <div class="row no-gutters align-items-center">
-                                    <div class="col mr-2">
-                                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed(in hours)</div>
-                                        <div class="row no-gutters align-items-center">
-                                            <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_percentage}}%</div>
+            <!-- ProgressBar: it needs a  'board_progress_summary' field -->
+            <div class="row">
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-info shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Completed(in hours)</div>
+                                    <div class="row no-gutters align-items-center">
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_percentage}}%</div>
+                                        </div>
+                                        <div class="col">
+                                            <div class="progress progress-sm mr-2">
+                                                <div class="progress-bar bg-info" role="progressbar" style="width: {{board_progress_summary.completed_percentage}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
                                             </div>
-                                            <div class="col">
-                                                <div class="progress progress-sm mr-2">
-                                                    <div class="progress-bar bg-info" role="progressbar" style="width: {{board_progress_summary.completed_percentage}}%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
-                                                </div>
-                                            </div>
-                                            <div class="col-auto">
-                                                <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
-                                            </div>
+                                        </div>
+                                        <div class="col-auto">
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -49,72 +48,88 @@
                         </div>
                     </div>
                 </div>
-                <!-- End Progress -->
-
-                <!-- Content -->
-                <div class="row justify-content-md-center">
-                    {% for task_group in tasks_grouped_by_status %}
-                    <div class="col-sm less-padding">
-                        <div class="card shadow mb-4">
-                            <div class="card-header">
-                                <h6>{{ task_group.status }} </h6>
-                            </div>
-
-                            <div class="card-body less-padding">
-                                {% if task_group.tasks %}
-                                    {% for task in task_group.tasks %}
-                                    <div class="task-card card bg-info text-white shadow ">
-                                        <div class="card-body less-padding">
-                                            <h6 class="text-s">
-                                                <a class="text-white" href="" data-toggle="modal" data-target="#createTaskModalCenter"
-                                                   data-tasktitle="{{ task.title }}"
-                                                   data-status="{{ task.status }}"
-                                                   data-description = {{task.description}}
-                                                   data-projectname="{{ task.project }}"
-                                                   data-estimated_hours="{{ task.estimated_hours }}"
-                                            ><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
-                                            <span style="background-color:{{task.project.color}}">{{task.project}}</span>
-                                            <span class="circle">{{task.estimated_hours}}h</span>
-
-                                            <a href="javascript:{document.getElementById('updatetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm float-right">
-                                                <i class="fas fa-arrow-right"></i>
-                                            </a>
-                                            <form id="updatetask{{task.id}}" action="{% url 'task-move-next-state' %}" method="POST">
-                                                {% csrf_token %}
-                                                <input name="task_id" value="{{task.id}}" type="hidden">
-                                            </form>
-                                        </div>
-                                    </div>
-                                    {% endfor %}
-                                {% else %}
-                                    <p>No tasks</p>
-                                {% endif %}
-                            </div>
-                        </div>
-                    </div>
-                    {% endfor %}
-                </div>
-                <!-- End Content -->
-
-                <!-- /.container-fluid -->
-
             </div>
-            <!-- End of Main Content -->
-            {% include 'partials/_footer.html' %}
+            <!-- End Progress -->
+
+            <!-- Content -->
+            <div class="row justify-content-md-center">
+                {% for task_group in tasks_grouped_by_status %}
+                <div class="col-sm less-padding">
+                    <div class="card shadow mb-4">
+                        <div class="card-header">
+                            <h6>{{ task_group.status }} </h6>
+                        </div>
+
+                        <div class="card-body less-padding">
+                        {% if task_group.tasks %}
+                            {% for task in task_group.tasks %}
+                            <div class="task-card card bg-info text-white shadow ">
+                                <div class="card-body less-padding" >
 
 
+                                    <h6 class="text-s">
+                                        <a class="text-white" href="" data-toggle="modal" data-target="#createTaskModalCenter"
+                                           data-taskid="{{ task.id }}"
+                                           data-tasktitle="{{ task.title }}"
+                                           data-status="{{ task.status }}"
+                                           data-description = {{task.description}}
+                                           data-projectid="{{ task.project.id }}"
+                                           data-estimatedhours="{{ task.estimated_hours }}"
+                                        ><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
+
+                                    <span style="background-color:{{task.project.color}}">{{task.project}}</span>
+                                    <span class="circle">{{task.estimated_hours}}h</span>
+                                    <div class="item" style="margin-top: 10px;">
+                                        <a href="javascript:{document.getElementById('updatetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm  float-right">
+                                            <i class="fas fa-arrow-right"></i>
+                                        </a>
+
+
+                                        <a href="javascript:{document.getElementById('updatepriority{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm float-right">
+                                            <i class="fas fa-arrow-up"></i>
+                                        </a>
+                                    </div>
+                                    <form id="updatepriority{{task.id}}" action="{% url 'task-increase-priority' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input name="task-id" value="{{task.id}}" type="hidden">
+                                    </form>
+                                    <form id="updatetask{{task.id}}" action="{% url 'task-move-next-state' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input name="task-id" value="{{task.id}}" type="hidden">
+                                    </form>
+                                </div>
+                                
+                            </div>
+                            {% endfor %}
+                        {% else %}
+                        <p>No tasks</p>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
-        <!-- End of Content Wrapper -->
+        <!-- End Content -->
+
+        <!-- /.container-fluid -->
 
     </div>
-    <!-- End of Page Wrapper -->
+    <!-- End of Main Content -->
+    {% include 'partials/_footer.html' %}
 
-    <!-- Scroll to Top Button-->
-    <a class="scroll-to-top rounded" href="#page-top">
-        <i class="fas fa-angle-up"></i>
-    </a>
-    {% include 'partials/_create_task_modal.html' %}
-    {% include 'partials/_start_cycle_modal.html' %}
-    {% include 'partials/_logout_modal.html' %}
+
+</div>
+<!-- End of Content Wrapper -->
+
+</div>
+<!-- End of Page Wrapper -->
+
+<!-- Scroll to Top Button-->
+<a class="scroll-to-top rounded" href="#page-top">
+    <i class="fas fa-angle-up"></i>
+</a>
+{% include 'partials/_create_task_modal.html' %}
+{% include 'partials/_start_cycle_modal.html' %}
+{% include 'partials/_logout_modal.html' %}
 
 {% endblock %}

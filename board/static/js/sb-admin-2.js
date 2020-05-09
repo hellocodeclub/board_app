@@ -51,15 +51,7 @@
     e.preventDefault();
   });
 
-  // Populate task modal when a task is double clicked
-//  $(document).on('click', '.task-card .card-body a', function(e) {
-//    var taskTitle = this.dataset.tasktitle
-//
-//    var modal = $('#createTaskModalCenter')
-//    var titleInput = modal.find('#title-name')
-//    titleInput.value = taskTitle
-//
-//  });
+
 
     $('#createTaskModalCenter').on('show.bs.modal', function (e){
         var linkClicked = e.relatedTarget
@@ -68,10 +60,10 @@
        $(this).find('#title-name').val(linkClicked.dataset.tasktitle)
        $(this).find('#status-task').val(linkClicked.dataset.status)
        $(this).find('#description-text').val(linkClicked.dataset.description)
-       $(this).find('#project-name').val(linkClicked.dataset.projectname)
-//       data-description = {{task.description}}
-//       data-projectname="{{ task.project.name }}"
-//       data-estimated_hours="{{ task.estimated_hours }}"
+       $(this).find('#estimated-hours').val(linkClicked.dataset.estimatedhours)
+       $(this).find('#project-name').val(linkClicked.dataset.projectid)
+       $(this).find('#task-id').val(linkClicked.dataset.taskid)
+
 
     })
 

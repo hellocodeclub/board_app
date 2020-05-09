@@ -16,6 +16,7 @@ class Task(models.Model):
     estimated_hours = models.IntegerField(blank=True)
     status = models.CharField(max_length=30)
     workspace = models.ForeignKey(Workspace, on_delete=models.DO_NOTHING)
+    priority = models.IntegerField(default=0)
     def __str__(self):
         return self.title
 
@@ -34,11 +35,11 @@ class CycleTaskAssociation(models.Model):
 
 def get_dictionary_tasks_by_status():
 
-    open_tasks = Task.objects.filter(status='OPEN')
-    ready_tasks = Task.objects.filter(status='READY')
-    in_progress_tasks = Task.objects.filter(status='IN_PROGRESS')
-    test = Task.objects.filter(status='TEST')
-    done = Task.objects.filter(status='DONE')
+    open_tasks = Task.objects.filter(status='OPEN').order_by('-priority')
+    ready_tasks = Task.objects.filter(status='READY').order_by('-priority')
+    in_progress_tasks = Task.objects.filter(status='IN_PROGRESS').order_by('-priority')
+    test = Task.objects.filter(status='TEST').order_by('-priority')
+    done = Task.objects.filter(status='DONE').order_by('-priority')
     list = []
     list.append({
         'status': status_choices['open'],
