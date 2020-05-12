@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
 from tasks.models import Task
-from accounts.models import Account
 from projects.models import Project, Workspace
 from tasks.choices import next_state
 from board.constants import SESSION_WORKSPACE_KEY_NAME
+from accounts.models import Account
 
 # Create your views here.
 
@@ -19,6 +19,7 @@ def task_next_state(request):
         return redirect('dashboard')
     else:
         return render(request, 'accounts/dashboard.html')
+
 def task_increase_priority(request):
     if (request.method == 'POST'):
         task_id = request.POST['task-id']
@@ -43,6 +44,7 @@ def save_task(request):
         status =request.POST['status-task'] if request.POST['status-task'] else 'OPEN'
         description = request.POST['description-text']
         project = Project.objects.filter(id=projectId)[0]
+        account = Account.objects.filter(username='marta@gmail.com')[0]
         if(not project):
             project = Project.objects.filter(title='Default')[0]
         if(taskId):
@@ -51,19 +53,31 @@ def save_task(request):
             task.title=titleName
             task.description= description
             task.estimated_hours= estimatedHours
+            task.assigned_user = account
             task.status=status
             task.project=project
             task.save()
         else:
-            account = Account.objects.filter(username='marta@gmail.com')[0]
-            workspace = Workspace.objects.filter(id=1)[0]
+            workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
+            workspace = Workspace.objects.filter(id= workspace_id)[0]
             task = Task(title=titleName,description= description,
-                        estimated_hours= estimatedHours,status=status, project=project,assigned_user=account, workspace=workspace).save()
+                        estimated_hours= estimatedHours,status=status, project=project,assigned_user=account, workspace=workspace)
+            task.save()
 
         return redirect('dashboard')
 
     else:
         return redirect('dashboard')
+
+def tasks(request):
+    workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
+    tasks = Task.objects.filter(workspace=workspace_id).order_by('-priority')
+
+    context = {
+        'tasks':tasks
+    }
+    return render(request, 'tasks/tasks.html', context)
+
 
 
 

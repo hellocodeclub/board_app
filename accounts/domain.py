@@ -33,7 +33,7 @@ class AccountRegistration:
 def create_session(request, username):
     account = Account.objects.filter(username=username)[0]
     workspace = Workspace.objects.filter(account=account)[0]
-    #request.session.set_expiry(3000) # 50 minutes
+    request.session.set_expiry(3000) # 50 minutes
     request.session[SESSION_WORKSPACE_KEY_NAME] = workspace.id
 
 

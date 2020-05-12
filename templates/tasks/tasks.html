@@ -1,0 +1,73 @@
+{% extends 'logged_base.html' %}
+
+{% load static %}
+
+{% block content %}
+<div id="content-wrapper" class="d-flex flex-column">
+    <div id="content">
+
+        <!-- Topbar -->
+        {% include 'partials/_topbar.html' %}
+        <!-- End of Topbar -->
+
+        <div class="container-fluid">
+
+            <!-- Page Heading -->
+            <div class="d-sm-flex align-items-center justify-content-between mb-4">
+                <h1 class="h3 mb-0 text-gray-800">Tasks</h1>
+            </div>
+
+            <div class="row">
+
+                <div class="col-lg-9">
+                    {% if tasks %}
+                        <div class="accordion">
+                        {% for task in tasks %}
+                            <div class="card mb-1 shadow">
+                                <a href="#task{{task.id}}" class="custom-card-header m-2 p-2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <span class="font-weight-bold text-primary" >{{task.id}} - {{task.title}}</span>
+                                    <span style="color: white" class="p-1 float-right {% if task.status == 'OPEN' %}bg-danger{% endif %}
+                                            {% if task.status == 'READY' %}bg-warning{% endif %}
+                                            {% if task.status == 'IN_PROGRESS' %}bg-primary{% endif %}
+                                            {% if task.status == 'TEST' %}bg-info{% endif %}
+                                            {% if task.status == 'DONE' %}bg-success{% endif %}">{{task.status}}</span>
+                                    <span class="float-right p-1 mr-1" style="color: white;background-color:{{task.project.color}}">{{task.project}}</span>
+                                </a>
+
+                                <div class="collapse" id="collapseCardExample">
+                                    <div class="card-body">
+                                        <p> The task description</p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                        </div>
+                    {% else %}
+                        <div class="card-body">
+                            <div class="col-lg-12"> No tasks created yet </div>
+                        </div>
+                    {% endif %}
+                 </div>
+                <div class="col-lg-3">
+                    {% for task in tasks %}
+                        <div class="card">
+                            <div class="card-body">
+                                <a href="#">
+                                    <img class="card-img-top" src="{% static 'img/undraw_posting_photo.svg' %}" style="height: 210px;" alt="Card image cap">
+                                    <h5>Product title</h5>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+</div>
+{% include 'partials/_create_task_modal.html' %}
+{% include 'partials/_start_cycle_modal.html' %}
+{% include 'partials/_logout_modal.html' %}
+{% endblock %}
