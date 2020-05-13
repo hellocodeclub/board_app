@@ -8,6 +8,27 @@ REGISTER_FORM_EMAIL = 'email'
 REGISTER_FORM_PASSWORD = 'password'
 REGISTER_FORM_PASSWORD2 = 'password2'
 
+TASK_FORM_ID = 'task-id'
+TASK_FORM_NAME ='title-name'
+TASK_FORM_PROJECT = 'project'
+TASK_FORM_ESTIMATED_HOURS = 'estimated-hours'
+TASK_FORM_ASSIGNED_PERSON = 'assigned-person'
+TASK_FORM_STATUS = 'status-task'
+TASK_FORM_DESCRIPTION = 'description-text'
+
+#Dashboard
+CONTEXT_DASHBOARD_TASK_GROUPS_BY_STATUS_FIELD = 'tasks_grouped_by_status'
+CONTEXT_DASHBOARD_PROGRESSBAR_FIELD = 'board_progress_summary'
+CONTEXT_PROJECT_FIELD = 'projects'
+
+#Project view
+CONTEXT_PROJECT_PROJECT_FIELD = 'project'
+CONTEXT_PROJECT_TASKS_FIELD = 'tasks'
+CONTEXT_PROJECT_STATUS_FIELD = 'status'
+
+
+
+
 
 # MESSAGES
 

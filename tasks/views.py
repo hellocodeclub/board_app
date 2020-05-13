@@ -2,14 +2,16 @@ from django.shortcuts import render, redirect
 from tasks.models import Task
 from projects.models import Project, Workspace
 from tasks.choices import next_state
-from board.constants import SESSION_WORKSPACE_KEY_NAME
+from board.constants import *
 from accounts.models import Account
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 
+@login_required(login_url='login')
 def task_next_state(request):
     if (request.method == 'POST'):
-        task_id = request.POST['task-id']
+        task_id = request.POST[TASK_FORM_ID]
         workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
         task_to_update = Task.objects.filter(id=task_id, workspace=workspace_id)
 
@@ -20,9 +22,10 @@ def task_next_state(request):
     else:
         return render(request, 'accounts/dashboard.html')
 
+@login_required(login_url='login')
 def task_increase_priority(request):
     if (request.method == 'POST'):
-        task_id = request.POST['task-id']
+        task_id = request.POST[TASK_FORM_ID]
         workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
         task_to_update = Task.objects.filter(id=task_id, workspace=workspace_id)
 
@@ -33,16 +36,16 @@ def task_increase_priority(request):
     else:
         return redirect('dashboard')
 
-
+@login_required(login_url='login')
 def save_task(request):
     if (request.method == 'POST'):
-        taskId = request.POST['task-id']
-        titleName = request.POST['title-name']
-        projectId = request.POST['project']
-        estimatedHours = request.POST['estimated-hours'] if request.POST['estimated-hours'] else 1
-        assignedPerson = request.POST['assigned-person']
-        status =request.POST['status-task'] if request.POST['status-task'] else 'OPEN'
-        description = request.POST['description-text']
+        taskId = request.POST[TASK_FORM_ID]
+        titleName = request.POST[TASK_FORM_NAME]
+        projectId = request.POST[TASK_FORM_PROJECT]
+        estimatedHours = request.POST[TASK_FORM_ESTIMATED_HOURS] if request.POST[TASK_FORM_ESTIMATED_HOURS] else 1
+        assignedPerson = request.POST[TASK_FORM_ASSIGNED_PERSON]
+        status =request.POST[TASK_FORM_STATUS] if request.POST[TASK_FORM_STATUS] else 'OPEN'
+        description = request.POST[TASK_FORM_DESCRIPTION]
         project = Project.objects.filter(id=projectId)[0]
         account = Account.objects.filter(username='marta@gmail.com')[0]
         if(not project):
@@ -69,6 +72,7 @@ def save_task(request):
     else:
         return redirect('dashboard')
 
+@login_required(login_url='login')
 def tasks(request):
     workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
     tasks = Task.objects.filter(workspace=workspace_id).order_by('-priority')

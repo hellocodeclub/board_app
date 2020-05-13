@@ -115,10 +115,6 @@ def create_mock_data(email):
     task4.save()
 
 
-        # self.assertEqual('something', register_response.content) # Check the html
-        # self.assertTrue('survery' in register_response.context) # Check that a given gield was returnd in the context
-        # self.assertEqual([ item.pk for item in register_response['']],['','','']) # Check
-
 
 
 
