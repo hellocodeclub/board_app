@@ -1,7 +1,10 @@
 from django.contrib.auth.models import User
 from .models import Account
 from projects.models import Workspace,Project
+from tasks.models import Cycle
 from django.contrib import auth
+from django.utils import timezone
+from board.constants import *
 from board.constants import SESSION_WORKSPACE_KEY_NAME,REGISTER_FORM_FIRST_NAME,REGISTER_FORM_EMAIL,REGISTER_FORM_LAST_NAME,REGISTER_FORM_PASSWORD,REGISTER_FORM_PASSWORD2
 
 class AccountRegistration:
@@ -27,7 +30,9 @@ class AccountRegistration:
         account.save()
         workspace = Workspace(account=account)
         workspace.save()
-        default_project = Project(title='Default',description='',workspace=workspace,color='#FFFFFF')
+        cycle = Cycle(goal_title=DEFAULT_CYCLE_TITLE, start_date=timezone.now(),workspace=workspace)
+        cycle.save()
+        default_project = Project(title=DEFAULT_PROJECT_TITLE,description='',workspace=workspace,color='#FFFFFF')
         default_project.save()
 
 def create_session(request, username):

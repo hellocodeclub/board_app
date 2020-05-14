@@ -2,6 +2,7 @@ from django.test import TestCase
 from tasks.models import Task
 from accounts.tests import create_mock_data
 from django.contrib.auth.models import User
+from projects.models import Project
 from board.constants import *
 
 # Create your tests here.
@@ -39,6 +40,10 @@ class TaskTest(TestCase):
         self.assertEqual(increase_priority_response.status_code, 302)
         self.assertEqual(increase_priority_response.url,'/accounts/login?next=/tasks/task-increase-priority')
 
+        get_tasks_response = self.client.post(path='/tasks/tasks', data={'task-id': 1})
+        self.assertEqual(get_tasks_response.status_code, 302)
+        self.assertEqual(get_tasks_response.url,'/accounts/login?next=/tasks/tasks')
+
 
     def test_task_increase_priority(self):
         login_response = self.client.post('/accounts/login', {
@@ -52,6 +57,57 @@ class TaskTest(TestCase):
         self.assertEqual(increase_priority_response.url,'/accounts/dashboard')
         task_updated = Task.objects.filter(description= task_not_updated.description)[0]
         self.assertEqual(task_not_updated.priority+1, task_updated.priority)
+
+    def test_save_new_task(self):
+        login_response = self.client.post('/accounts/login', {
+            LOGIN_FORM_EMAIL_FIELD_NAME : 'email@email.com',
+            LOGIN_FORM_PASSWORD_FIELD_NAME: '123'
+        })
+        self.assertEqual(login_response.status_code,302)
+        existing_project = Project.objects.all()[0]
+        data={
+            TASK_FORM_NAME: 'Do something cool',
+            TASK_FORM_DESCRIPTION : 'Do something cool',
+            TASK_FORM_STATUS:'OPEN',
+            TASK_FORM_ESTIMATED_HOURS: 1,
+            TASK_FORM_PROJECT: existing_project.id,
+            TASK_FORM_ASSIGNED_PERSON: 'email@email.com'
+
+        }
+        save_task_response = self.client.post(path='/tasks/save-task', data=data)
+        self.assertEqual(save_task_response.status_code, 302)
+        task_created = Task.objects.filter(description= data[TASK_FORM_DESCRIPTION])[0]
+        self.assertTrue(task_created)
+
+    def test_update_task(self):
+        login_response = self.client.post('/accounts/login', {
+            LOGIN_FORM_EMAIL_FIELD_NAME : 'email@email.com',
+            LOGIN_FORM_PASSWORD_FIELD_NAME: '123'
+        })
+        self.assertEqual(login_response.status_code,302)
+        existing_task = Task.objects.all()[0]
+        data={
+            TASK_FORM_ID: existing_task.id,
+            TASK_FORM_NAME: 'Do something cool',
+            TASK_FORM_DESCRIPTION : 'Do something cool',
+            TASK_FORM_STATUS:existing_task.status,
+            TASK_FORM_ESTIMATED_HOURS: existing_task.estimated_hours,
+            TASK_FORM_PROJECT: existing_task.project.id,
+            TASK_FORM_ASSIGNED_PERSON: existing_task.assigned_user.username
+
+        }
+        save_task_response = self.client.post(path='/tasks/save-task', data=data)
+        self.assertEqual(save_task_response.status_code, 302)
+        task_created = Task.objects.filter(id= existing_task.id)[0]
+        self.assertTrue(task_created)
+        self.assertEqual(task_created.title, data.get(TASK_FORM_NAME))
+        self.assertEqual(task_created.description, data.get(TASK_FORM_DESCRIPTION))
+
+
+
+
+
+
 
 
 

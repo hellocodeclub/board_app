@@ -1,10 +1,11 @@
 from django.db import models
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
-from datetime import datetime
 from projects.models import Project,Workspace
 from accounts.models import Account
 from tasks.choices import status_choices
+from django.utils import timezone
+from board.constants import *
 
 # Create your models here.
 
@@ -22,24 +23,34 @@ class Task(models.Model):
 
 class Cycle(models.Model):
     goal_title = models.CharField(max_length=300)
-    start_date = models.DateTimeField(default=datetime.now)
-    end_date = models.DateTimeField(blank=True)
+    start_date = models.DateTimeField(default=timezone.now)
+    end_date = models.DateTimeField(null=True)
     workspace = models.ForeignKey(Workspace, on_delete=models.DO_NOTHING)
+    tasks = models.ManyToManyField(Task)
     def __str__(self):
         return self.goal_title
 
-class CycleTaskAssociation(models.Model):
-    cycle = models.ForeignKey(Cycle, on_delete=models.DO_NOTHING)
-    task = models.ForeignKey(Task, on_delete=models.DO_NOTHING)
+def get_active_cycle(workspace_id):
+    active_cycle = Cycle.objects.filter(workspace=workspace_id,start_date__lte=timezone.now(), end_date__gte=timezone.now())
+    if(active_cycle):
+        active_cycle = active_cycle[0]
+    else:
+        active_cycle= Cycle.objects.filter(workspace=workspace_id, goal_title=DEFAULT_CYCLE_TITLE)[0]
+    return active_cycle
 
 
-def get_dictionary_tasks_by_status():
+def get_list_tasks_by_status(workspace_id):
 
-    open_tasks = Task.objects.filter(status='OPEN').order_by('-priority')
-    ready_tasks = Task.objects.filter(status='READY').order_by('-priority')
-    in_progress_tasks = Task.objects.filter(status='IN_PROGRESS').order_by('-priority')
-    test = Task.objects.filter(status='TEST').order_by('-priority')
-    done = Task.objects.filter(status='DONE').order_by('-priority')
+    active_cycle = get_active_cycle(workspace_id)
+    if(not active_cycle.tasks):
+        return []
+    tasks = Task.objects.filter(models.Q(cycle__id=active_cycle.id))
+    open_tasks = tasks.filter(status='OPEN').order_by('-priority')
+    ready_tasks = tasks.filter(status='READY').order_by('-priority')
+    in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-priority')
+    test = tasks.filter(status='TEST').order_by('-priority')
+    done = tasks.filter(status='DONE').order_by('-priority')
+
     list = []
     list.append({
         'status': status_choices['open'],

@@ -39,15 +39,15 @@ def task_increase_priority(request):
 @login_required(login_url='login')
 def save_task(request):
     if (request.method == 'POST'):
-        taskId = request.POST[TASK_FORM_ID]
+        taskId = request.POST.get(TASK_FORM_ID)
         titleName = request.POST[TASK_FORM_NAME]
         projectId = request.POST[TASK_FORM_PROJECT]
         estimatedHours = request.POST[TASK_FORM_ESTIMATED_HOURS] if request.POST[TASK_FORM_ESTIMATED_HOURS] else 1
-        assignedPerson = request.POST[TASK_FORM_ASSIGNED_PERSON]
+        assignedPerson = request.POST.get(TASK_FORM_ASSIGNED_PERSON)
         status =request.POST[TASK_FORM_STATUS] if request.POST[TASK_FORM_STATUS] else 'OPEN'
         description = request.POST[TASK_FORM_DESCRIPTION]
         project = Project.objects.filter(id=projectId)[0]
-        account = Account.objects.filter(username='marta@gmail.com')[0]
+        account = Account.objects.filter(username=assignedPerson)[0]
         if(not project):
             project = Project.objects.filter(title='Default')[0]
         if(taskId):
