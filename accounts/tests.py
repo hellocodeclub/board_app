@@ -84,10 +84,12 @@ class AccountTest(TestCase):
         self.assertTrue( 'tasks_grouped_by_status' in dashboard_response.context)
         self.assertTrue( 'board_progress_summary' in dashboard_response.context)
         self.assertTrue( 'projects' in dashboard_response.context)
+        self.assertTrue( 'cycle' in dashboard_response.context)
         self.assertEqual([project.title for project in dashboard_response.context['projects']],['Project 1','Project 2'])
         self.assertEqual([dashboard_response.context['board_progress_summary']['total_tasks']],[4])
         self.assertEqual([dashboard_response.context['board_progress_summary']['completed_percentage']],[25])
         self.assertEqual([dashboard_response.context['board_progress_summary']['completed_tasks']],[1])
+        self.assertEqual(len(dashboard_response.context['tasks_grouped_by_status']),4)
 
         for tasks_group in dashboard_response.context['tasks_grouped_by_status']:
             if(tasks_group['status'] == 'OPEN'):
@@ -98,6 +100,18 @@ class AccountTest(TestCase):
                 self.assertEqual(tasks_group['tasks'][0].title,'task 3')
             if(tasks_group['status'] == 'DONE'):
                 self.assertEqual(tasks_group['tasks'][0].title,'task 4')
+
+    def test_dashboard_cycle_is_received(self):
+        login_response = self.client.post('/accounts/login', {
+            LOGIN_FORM_EMAIL_FIELD_NAME : 'email@email.com',
+            LOGIN_FORM_PASSWORD_FIELD_NAME: '123'
+        })
+        self.assertEqual(login_response.status_code,302)
+        dashboard_response =self.client.get('/accounts/dashboard')
+        self.assertTrue( 'cycle' in dashboard_response.context)
+        self.assertEqual(dashboard_response.context['cycle'].goal_title,'Active')
+
+
 
 
 
@@ -121,7 +135,9 @@ def create_mock_data(email):
     tasks = Task.objects.all()
     cycle = Cycle(goal_title='Default', start_date=timezone.now(), workspace=workspace)
     cycle.save()
-    cycle.tasks.set(tasks)
+    activeCycle = Cycle(goal_title='Active', start_date=timezone.now(),end_date=timezone.now()+ timezone.timedelta(7), workspace=workspace)
+    activeCycle.save()
+    activeCycle.tasks.set(tasks)
     cycle.save()
 
 

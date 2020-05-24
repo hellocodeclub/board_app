@@ -15,12 +15,19 @@ TASK_FORM_ESTIMATED_HOURS = 'estimated-hours'
 TASK_FORM_ASSIGNED_PERSON = 'assigned-person'
 TASK_FORM_STATUS = 'status-task'
 TASK_FORM_DESCRIPTION = 'description-text'
+TASK_FORM_INCLUDE_IN_CURRENT_CYCLE = 'current_cycle'
+
+#Cycle form
+START_CYCLE_TITLE = 'cycle-title'
+DURATION_CYCLE = 'duration'
 
 #Dashboard
 CONTEXT_DASHBOARD_TASK_GROUPS_BY_STATUS_FIELD = 'tasks_grouped_by_status'
 CONTEXT_DASHBOARD_PROGRESSBAR_FIELD = 'board_progress_summary'
 CONTEXT_PROJECT_FIELD = 'projects'
-CONTEXT_GOAL_TITLE = 'cycle_title'
+CONTEXT_GOAL_TITLE = 'cycle'
+CONTEXT_NUMBER_TASKS_OUTSIDE_BOARD = 'open_tasks_outside_board'
+CONTEXT_NOTIFICATIONS = 'notifications'
 
 #Project view
 CONTEXT_PROJECT_PROJECT_FIELD = 'project'

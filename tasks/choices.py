@@ -1,8 +1,8 @@
 status_choices = {
     'open':'Open',
-    'ready':'Ready',
+    'ready':'Ready To Start',
     'in_progress':'In Progress',
-    'test':'In Test',
+    'test':'Check It Works',
     'done':'Done'
 }
 

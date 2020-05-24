@@ -67,4 +67,15 @@
 
     })
 
+    $('#createProjectModalCenter').on('show.bs.modal', function (e){
+            var linkClicked = e.relatedTarget
+
+           $(this).find('#project-title').val(linkClicked.dataset.projecttitle)
+           $(this).find('#project-description').val(linkClicked.dataset.projectdescription)
+           $(this).find('#project-color').val(linkClicked.dataset.projectcolor)
+          $(this).find('#project-id').val(linkClicked.dataset.projectid)
+
+
+    })
+
 })(jQuery); // End of use strict

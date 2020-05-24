@@ -24,7 +24,15 @@
                         <div class="accordion">
                         {% for task in tasks %}
                             <div class="card mb-1 shadow">
-                                <a href="#task{{task.id}}" class="custom-card-header m-2 p-2" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                <a href="" data-toggle="modal" data-target="#createTaskModalCenter"
+                                   data-taskid="{{ task.id }}"
+                                   data-tasktitle="{{ task.title }}"
+                                   data-status="{{ task.status }}"
+                                   data-description ="{{task.description}}"
+                                   data-projectid="{{ task.project.id }}"
+                                   data-estimatedhours="{{ task.estimated_hours }}" class="custom-card-header m-2 p-2"
+                                   data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
+
                                     <span class="font-weight-bold text-primary" >{{task.id}} - {{task.title}}</span>
                                     <span style="color: white" class="p-1 float-right {% if task.status == 'OPEN' %}bg-danger{% endif %}
                                             {% if task.status == 'READY' %}bg-warning{% endif %}
@@ -68,6 +76,6 @@
     </div>
 </div>
 {% include 'partials/_create_task_modal.html' %}
-{% include 'partials/_start_cycle_modal.html' %}
+{% include 'partials/_create_project_modal.html' %}
 {% include 'partials/_logout_modal.html' %}
 {% endblock %}

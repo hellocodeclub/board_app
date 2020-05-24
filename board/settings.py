@@ -35,12 +35,15 @@ INSTALLED_APPS = [
     'projects.apps.ProjectsConfig',
     'tasks.apps.TasksConfig',
     'accounts.apps.AccountsConfig',
+    'affilliateproducts.apps.AffilliateProductsConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles'
+    'django.contrib.staticfiles',
+    'django_celery_beat',
+    'notifications'
 ]
 
 MIDDLEWARE = [
@@ -142,3 +145,7 @@ MESSAGE_TAGS = {
 
 #Configure session cache
 SESSION_ENGINE = "django.contrib.sessions.backends.cache"
+
+DJANGO_NOTIFICATIONS_CONFIG = {
+    'USE_JSONFIELD': True,
+}

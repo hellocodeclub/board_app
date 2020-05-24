@@ -46,6 +46,12 @@
                             <option value="DONE" >Done</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <div class="custom-control custom-checkbox small">
+                            <input type="checkbox" class="custom-control-input" name="current_cycle" id="current_cycle" checked>
+                            <label class="custom-control-label" for="current_cycle">Add to current cycle</label>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label for="description-text" class="col-form-label">Description</label>
@@ -56,7 +62,7 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                <a type="button" class="btn btn-primary" href="javascript:{document.getElementById('submitask').submit()}">Send message</a>
+                <a type="button" class="btn btn-primary" href="javascript:{document.getElementById('submitask').submit()}">Create Task</a>
             </div>
         </div>
     </div>

@@ -17,9 +17,15 @@
             {% include 'partials/_alerts.html' %}
             <!-- Page Heading -->
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                <h1 class="h3 mb-0 text-gray-800">Goal: {{ cycle_title }}</h1>
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#startCycleModalCenter">
-                    <i class="fas fa-download fa-sm text-white-50"></i> Start Week</a>
+                <h1 class="h3 mb-0 text-gray-800">Goal: {{ cycle.goal_title }}</h1>
+
+                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm
+                   {% if cycle_title != 'Default' %} disabled {% endif %}"
+                   data-toggle="modal" data-target="#startCycleModalCenter">
+                    <i class="fas fa-download fa-sm text-white-50"></i> Start Cycle
+                </a>
+
+
             </div>
 
             <!-- ProgressBar: it needs a  'board_progress_summary' field -->
@@ -43,6 +49,36 @@
                                             <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
                                         </div>
                                     </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-primary shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Cycle ending in:</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800"> {{cycle.end_date | timeuntil}}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-calendar fa-2x text-gray-300"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-xl-3 col-md-6 mb-4">
+                    <div class="card border-left-warning shadow h-100 py-2">
+                        <div class="card-body">
+                            <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                    <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">Pending tasks(Out of this cycle)</div>
+                                    <div class="h5 mb-0 font-weight-bold text-gray-800">{{ open_tasks_outside_board }}</div>
+                                </div>
+                                <div class="col-auto">
+                                    <i class="fas fa-comments fa-2x text-gray-300"></i>
                                 </div>
                             </div>
                         </div>
@@ -83,10 +119,11 @@
                                         <a href="javascript:{document.getElementById('updatetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm  float-right">
                                             <i class="fas fa-arrow-right"></i>
                                         </a>
-
-
-                                        <a href="javascript:{document.getElementById('updatepriority{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm float-right">
+                                        <a href="javascript:{document.getElementById('updatepriority{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm float-right mr-1">
                                             <i class="fas fa-arrow-up"></i>
+                                        </a>
+                                        <a href="javascript:{document.getElementById('deletetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm  float-right mr-1">
+                                            <i class="far fa-trash-alt"></i>
                                         </a>
                                     </div>
                                     <form id="updatepriority{{task.id}}" action="{% url 'task-increase-priority' %}" method="POST">
@@ -94,6 +131,10 @@
                                         <input name="task-id" value="{{task.id}}" type="hidden">
                                     </form>
                                     <form id="updatetask{{task.id}}" action="{% url 'task-move-next-state' %}" method="POST">
+                                        {% csrf_token %}
+                                        <input name="task-id" value="{{task.id}}" type="hidden">
+                                    </form>
+                                    <form id="deletetask{{task.id}}" action="{% url 'delete-task' %}" method="POST">
                                         {% csrf_token %}
                                         <input name="task-id" value="{{task.id}}" type="hidden">
                                     </form>
@@ -129,6 +170,7 @@
     <i class="fas fa-angle-up"></i>
 </a>
 {% include 'partials/_create_task_modal.html' %}
+{% include 'partials/_create_project_modal.html' %}
 {% include 'partials/_start_cycle_modal.html' %}
 {% include 'partials/_logout_modal.html' %}
 

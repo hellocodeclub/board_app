@@ -31,20 +31,41 @@ class Cycle(models.Model):
         return self.goal_title
 
 def get_active_cycle(workspace_id):
-    active_cycle = Cycle.objects.filter(workspace=workspace_id,start_date__lte=timezone.now(), end_date__gte=timezone.now())
+    active_cycle = Cycle.objects.filter(workspace=workspace_id,start_date__lte=timezone.now(), end_date__gte=timezone.now()).exclude(goal_title=DEFAULT_CYCLE_TITLE)
     if(active_cycle):
         active_cycle = active_cycle[0]
     else:
         active_cycle= Cycle.objects.filter(workspace=workspace_id, goal_title=DEFAULT_CYCLE_TITLE)[0]
     return active_cycle
 
-
-def get_list_tasks_by_status(workspace_id):
-
+def count_open_tasks(workspace_id):
     active_cycle = get_active_cycle(workspace_id)
     if(not active_cycle.tasks):
         return []
     tasks = Task.objects.filter(models.Q(cycle__id=active_cycle.id))
+    if(tasks):
+        return 10
+    else:
+        return 0
+
+def get_tasks_on_board(workspace_id):
+    active_cycle = get_active_cycle(workspace_id)
+    if(not active_cycle.tasks):
+        return []
+    tasks = Task.objects.filter(models.Q(cycle__id=active_cycle.id))
+    return tasks
+
+def get_pending_tasks_outside_board(workspace_id):
+    tasks = get_tasks_on_board(workspace_id)
+    ids_tasks_on_board = [task.id for task in tasks]
+    all_tasks_pending = Task.objects.filter(workspace_id=workspace_id).exclude(status='DONE').exclude(id__in=ids_tasks_on_board)
+    return all_tasks_pending.count()
+
+
+
+def get_list_tasks_by_status(workspace_id):
+
+    tasks = get_tasks_on_board(workspace_id)
     open_tasks = tasks.filter(status='OPEN').order_by('-priority')
     ready_tasks = tasks.filter(status='READY').order_by('-priority')
     in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-priority')

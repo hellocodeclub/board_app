@@ -1,17 +1,6 @@
 (function($) {
   "use strict"; // Start of use strict
-  
-  // Open the create task modal
-//   $('#createTaskModalCenter').on('show.bs.modal', function (event) {
-//   	var button = $(event.relatedTarget) // Button that triggered the modal
-//   	var recipient = button.data('whatever') // Extract info from data-* attributes
-//   	// If necessary, you could initiate an AJAX request here (and then do the updating in a callback).
-//   	// Update the modal's content. We'll use jQuery here, but you could use a data binding library or other methods instead.
-//   	var modal = $(this)
-//   	modal.find('.modal-title').text('Something')
-//   	//modal.find('.modal-body input').val(recipient)
-//   })
-	
+
 
   // Toggle the side navigation
   $("#sidebarToggle, #sidebarToggleTop").on('click', function(e) {
@@ -49,6 +38,10 @@
     }
   });
 
+  setTimeout(function(){
+      $('#message').fadeOut('slow')
+  }, 3000);
+
   // Smooth scrolling using jQuery easing
   $(document).on('click', 'a.scroll-to-top', function(e) {
     var $anchor = $(this);
@@ -57,5 +50,32 @@
     }, 1000, 'easeInOutExpo');
     e.preventDefault();
   });
+
+
+
+    $('#createTaskModalCenter').on('show.bs.modal', function (e){
+        var linkClicked = e.relatedTarget
+
+       var taskTitle = linkClicked.dataset.tasktitle
+       $(this).find('#title-name').val(linkClicked.dataset.tasktitle)
+       $(this).find('#status-task').val(linkClicked.dataset.status)
+       $(this).find('#description-text').val(linkClicked.dataset.description)
+       $(this).find('#estimated-hours').val(linkClicked.dataset.estimatedhours)
+       $(this).find('#project-name').val(linkClicked.dataset.projectid)
+       $(this).find('#task-id').val(linkClicked.dataset.taskid)
+
+
+    })
+
+    $('#createProjectModalCenter').on('show.bs.modal', function (e){
+            var linkClicked = e.relatedTarget
+
+           $(this).find('#project-title').val(linkClicked.dataset.projecttitle)
+           $(this).find('#project-description').val(linkClicked.dataset.projectdescription)
+           $(this).find('#project-color').val(linkClicked.dataset.projectcolor)
+          $(this).find('#project-id').val(linkClicked.dataset.projectid)
+
+
+    })
 
 })(jQuery); // End of use strict

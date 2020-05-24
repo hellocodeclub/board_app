@@ -20,17 +20,36 @@
             <div class="row">
 
                <div class="col-lg-10">
-                   {% if projects %}
+               {% if projects %}
                     {% for project in projects %}
                         <div class="card shadow mb-4">
                             <!-- Card Header - Accordion -->
+                            <div class="d-block card-header py-3"
+                                  data-toggle="collapse"  role="button" aria-expanded="true" aria-controls="collapseCardExample">
+                                    <a class="m-0 font-weight-bold text-primary"
+                                       href="#project{{project.project.id}}"
+                                       data-toggle="modal" data-target="#createProjectModalCenter"
+                                       data-projectid ="{{ project.project.id }}"
+                                       data-projecttitle = "{{project.project.title}}"
+                                       data-projectcolor ="{{project.project.color}}"
+                                       data-projectdescription ="{{project.project.description}}"
+                                       role="button"
+                                    >{{project.project.title}}</a>
+                                    <span class="ml-3 dropdown no-arrow">
+                                        <a href="javascript:{document.getElementById('deleteproject{{project.project.id}}').submit()}" class="btn btn-primary btn-circle btn-sm">
+                                            <i class="far fa-trash-alt"></i>
+                                        </a>
 
-                            <a href="#project{{project.project.id}}" class="d-block card-header py-3" data-toggle="collapse" role="button" aria-expanded="true" aria-controls="collapseCardExample">
-                                <h6 class="m-0 font-weight-bold text-primary">{{project.project.title}}</h6>
-                            </a>
+                                        <form id="deleteproject{{project.project.id}}" action="{% url 'delete-project' %}" method="POST">
+                                            {% csrf_token %}
+                                            <input name="project-id" value="{{project.project.id}}" type="hidden">
+                                        </form>
+                                    </span>
+                            </div>
+
                             <!-- Card Content - Collapse -->
                             <div class="collapse show" id="collapseCardExample">
-                            <div class="card-body">
+                                <div class="card-body">
                                 {% if project.tasks %}
                                 <div class="col-lg-12">
                                     <h4 class="small font-weight-bold">State</h4>
@@ -74,8 +93,7 @@
 
                                 </div>
                             </div>
-
-                        </div>
+                            </div>
                         </div>
                     {% endfor %}
                {% else %}
@@ -111,6 +129,7 @@
 
 </div>
 {% include 'partials/_create_task_modal.html' %}
+{% include 'partials/_create_project_modal.html' %}
 {% include 'partials/_start_cycle_modal.html' %}
 {% include 'partials/_logout_modal.html' %}
 {% endblock %}
