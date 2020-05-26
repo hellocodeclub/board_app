@@ -8,6 +8,7 @@ from projects.models import Project
 from board.constants import *
 from django.contrib.auth.decorators import login_required
 from notifications.models import Notification
+from affilliateproducts.models import AffilliateProduct
 
 # Create your views here.
 
@@ -62,13 +63,15 @@ def dashboard(request):
         activate_cycle = get_active_cycle(workspace_id)
         number_open_tasks_not_on_board = get_pending_tasks_outside_board(workspace_id)
         notifications = Notification.objects.unread()
+        recommendations = AffilliateProduct.objects.all()
         context = {
             CONTEXT_DASHBOARD_TASK_GROUPS_BY_STATUS_FIELD: tasks_groups,
             CONTEXT_DASHBOARD_PROGRESSBAR_FIELD: board_progress_summary,
             CONTEXT_PROJECT_FIELD: projects,
             CONTEXT_GOAL_TITLE: activate_cycle,
             CONTEXT_NUMBER_TASKS_OUTSIDE_BOARD: number_open_tasks_not_on_board,
-            CONTEXT_NOTIFICATIONS: notifications
+            CONTEXT_NOTIFICATIONS: notifications,
+            'recommendations': recommendations
         }
         return render(request,'accounts/dashboard.html', context)
     else:

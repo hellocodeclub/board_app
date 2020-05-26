@@ -12,6 +12,7 @@ class Project(models.Model):
     description = models.TextField(blank=True)
     workspace = models.ForeignKey(Workspace, on_delete=models.DO_NOTHING)
     color = models.CharField(max_length=10)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 

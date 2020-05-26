@@ -8,6 +8,7 @@ from django.utils import timezone
 from .forms import TaskForm
 from .service import save_or_update_task, remove_task
 from notifications.signals import notify
+from affilliateproducts.models import AffilliateProduct
 from django.contrib.auth.models import User
 
 
@@ -60,10 +61,12 @@ def tasks(request):
     workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
     tasks = Task.objects.filter(workspace=workspace_id).order_by('-priority')
     projects = Project.objects.all()
+    affiliate_products = AffilliateProduct.objects.all()
 
     context = {
         'tasks':tasks,
-        'projects': projects
+        'projects': projects,
+        'recomendations': affiliate_products
     }
     return render(request, 'tasks/tasks.html', context)
 

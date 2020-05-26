@@ -57,12 +57,12 @@
                     {% endif %}
                  </div>
                 <div class="col-lg-3">
-                    {% for task in tasks %}
-                        <div class="card">
+                    {% for recomendation in recomendations %}
+                        <div class="card mt-3">
                             <div class="card-body">
-                                <a href="#">
-                                    <img class="card-img-top" src="{% static 'img/undraw_posting_photo.svg' %}" style="height: 210px;" alt="Card image cap">
-                                    <h5>Product title</h5>
+                                <a href="{{recomendation.redirect_url}}">
+                                    <img class="card-img-top" src="{{recomendation.image_url}}" alt="Card image cap">
+                                    <h5>{{recomendation.title}}</h5>
                                 </a>
                             </div>
                         </div>

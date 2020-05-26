@@ -18,6 +18,7 @@ class Task(models.Model):
     status = models.CharField(max_length=30)
     workspace = models.ForeignKey(Workspace, on_delete=models.DO_NOTHING)
     priority = models.IntegerField(default=0)
+    updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return self.title
 
@@ -66,11 +67,11 @@ def get_pending_tasks_outside_board(workspace_id):
 def get_list_tasks_by_status(workspace_id):
 
     tasks = get_tasks_on_board(workspace_id)
-    open_tasks = tasks.filter(status='OPEN').order_by('-priority')
-    ready_tasks = tasks.filter(status='READY').order_by('-priority')
-    in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-priority')
-    test = tasks.filter(status='TEST').order_by('-priority')
-    done = tasks.filter(status='DONE').order_by('-priority')
+    open_tasks = tasks.filter(status='OPEN').order_by('-priority').order_by('-updated_at')
+    ready_tasks = tasks.filter(status='READY').order_by('-priority').order_by('-updated_at')
+    in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-priority').order_by('-updated_at')
+    test = tasks.filter(status='TEST').order_by('-priority').order_by('-updated_at')
+    done = tasks.filter(status='DONE').order_by('-priority').order_by('-updated_at')
 
     list = []
     list.append({

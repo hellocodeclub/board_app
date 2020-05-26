@@ -150,6 +150,21 @@
             </div>
             {% endfor %}
         </div>
+        <div class="row justify-content-md-center">
+            {% for recomendation in recommendations %}
+            <div class="col-lg-3">
+                <div class="card mt-3">
+                    <div class="card-body">
+                        <a href="{{recomendation.redirect_url}}">
+                            <img class="card-img-top" src="{{recomendation.image_url}}" alt="Card image cap">
+                            <h5 class="mt-2">{{recomendation.title}}</h5>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
         <!-- End Content -->
 
         <!-- /.container-fluid -->

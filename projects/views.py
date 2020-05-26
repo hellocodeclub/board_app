@@ -3,15 +3,18 @@ from projects.models import Project, Workspace
 from tasks.models import Task, caclulate_status_percentages
 from board.constants import SESSION_WORKSPACE_KEY_NAME
 from django.contrib.auth.decorators import login_required
+from affilliateproducts.models import AffilliateProduct
 
 # Create your views here.
 
 @login_required(login_url='login')
 def projects(request):
     workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
+    recommendations = AffilliateProduct.objects.all()
 
     context = {
-        'projects':get_projects_with_their_tasks(workspace_id)
+        'projects':get_projects_with_their_tasks(workspace_id),
+        'recommendations': recommendations
     }
     return render(request, 'projects/projects.html', context)
 
@@ -56,11 +59,9 @@ def delete_project(request):
 
 
 
-
-
 def get_projects_with_their_tasks(workspace_id):
     projects_with_their_tasks = []
-    projects = Project.objects.filter(workspace= workspace_id)
+    projects = Project.objects.filter(workspace= workspace_id).order_by('-updated_at')
 
     for project in projects:
         tasks = Task.objects.filter(project=project)
