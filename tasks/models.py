@@ -14,7 +14,7 @@ class Task(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     project = models.ForeignKey(Project,on_delete=models.DO_NOTHING)
-    estimated_hours = models.IntegerField(blank=True)
+    estimated_hours = models.DecimalField(default=0.00,max_digits=100, decimal_places=2)
     status = models.CharField(max_length=30)
     workspace = models.ForeignKey(Workspace, on_delete=models.DO_NOTHING)
     priority = models.IntegerField(default=0)
@@ -31,6 +31,13 @@ class Cycle(models.Model):
     def __str__(self):
         return self.goal_title
 
+class CycleHistoryData(models.Model):
+    start_date = models.DateTimeField()
+    end_date = models.DateTimeField()
+    duration = models.DurationField()
+    planned_hours = models.DecimalField(default=0.00,max_digits=100, decimal_places=2)
+    done_hours = models.DecimalField(default=0.00,max_digits=100, decimal_places=2)
+
 def get_active_cycle(workspace_id):
     active_cycle = Cycle.objects.filter(workspace=workspace_id,start_date__lte=timezone.now(), end_date__gte=timezone.now()).exclude(goal_title=DEFAULT_CYCLE_TITLE)
     if(active_cycle):
@@ -38,6 +45,10 @@ def get_active_cycle(workspace_id):
     else:
         active_cycle= Cycle.objects.filter(workspace=workspace_id, goal_title=DEFAULT_CYCLE_TITLE)[0]
     return active_cycle
+
+def get_default_cycle(workspace_id):
+    return Cycle.objects.filter(workspace=workspace_id, goal_title=DEFAULT_CYCLE_TITLE)[0]
+
 
 def count_open_tasks(workspace_id):
     active_cycle = get_active_cycle(workspace_id)
@@ -67,11 +78,11 @@ def get_pending_tasks_outside_board(workspace_id):
 def get_list_tasks_by_status(workspace_id):
 
     tasks = get_tasks_on_board(workspace_id)
-    open_tasks = tasks.filter(status='OPEN').order_by('-priority').order_by('-updated_at')
-    ready_tasks = tasks.filter(status='READY').order_by('-priority').order_by('-updated_at')
-    in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-priority').order_by('-updated_at')
-    test = tasks.filter(status='TEST').order_by('-priority').order_by('-updated_at')
-    done = tasks.filter(status='DONE').order_by('-priority').order_by('-updated_at')
+    open_tasks = tasks.filter(status='OPEN').order_by('-updated_at')
+    ready_tasks = tasks.filter(status='READY').order_by('-updated_at')
+    in_progress_tasks = tasks.filter(status='IN_PROGRESS').order_by('-updated_at')
+    test = tasks.filter(status='TEST').order_by('-updated_at')
+    done = tasks.filter(status='DONE').order_by('-updated_at')
 
     list = []
     list.append({
@@ -122,7 +133,7 @@ def caclulate_status_percentages(project):
         'open_tasks_hours': calculate_percentage(open_tasks_hours['hours'],total_tasks_hours['hours']),
         'ready_tasks_hours': calculate_percentage(ready_tasks_hours['hours'],total_tasks_hours['hours']),
         'in_progress_tasks_hours': calculate_percentage(in_progress_tasks_hours['hours'],total_tasks_hours['hours']),
-        'test_hours': calculate_percentage(test_hours['hours'],total_tasks_hours['hours']),
-        'done_hours': calculate_percentage(done_hours['hours'],total_tasks_hours['hours'])
+        'test_tasks_hours': calculate_percentage(test_hours['hours'],total_tasks_hours['hours']),
+        'done_tasks_hours': calculate_percentage(done_hours['hours'],total_tasks_hours['hours'])
     }
     return status

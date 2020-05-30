@@ -19,11 +19,23 @@
             <div class="d-sm-flex align-items-center justify-content-between mb-4">
                 <h1 class="h3 mb-0 text-gray-800">Goal: {{ cycle.goal_title }}</h1>
 
-                <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm
-                   {% if cycle_title != 'Default' %} disabled {% endif %}"
-                   data-toggle="modal" data-target="#startCycleModalCenter">
-                    <i class="fas fa-download fa-sm text-white-50"></i> Start Cycle
-                </a>
+
+                {% if cycle.goal_title != 'Default' %}
+                    <a href="javascript:{document.getElementById('endcycle').submit()}"
+                       class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                        <i class="fas fa-download fa-sm text-white-50"></i> End Cycle
+                    </a>
+                    <form id="endcycle" action="{% url 'end-cycle' %}" method="GET">
+                        {% csrf_token %}
+                        <!--<input name="task-id" value="{{task.id}}" type="hidden"> -->
+                    </form>
+                {% else %}
+                    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm
+                        {% if cycle.goal_title != 'Default' %} disabled {% endif %}"
+                        data-toggle="modal" data-target="#startCycleModalCenter">
+                        <i class="fas fa-download fa-sm text-white-50"></i> Start Cycle
+                    </a>
+                {% endif %}
 
 
             </div>
@@ -46,7 +58,7 @@
                                             </div>
                                         </div>
                                         <div class="col-auto">
-                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks}}/{{board_progress_summary.total_tasks}}</div>
+                                            <div class="h5 mb-0 mr-3 font-weight-bold text-gray-800">{{board_progress_summary.completed_tasks | floatformat }}/{{board_progress_summary.total_tasks | floatformat }}</div>
                                         </div>
                                     </div>
                                 </div>
@@ -54,6 +66,7 @@
                         </div>
                     </div>
                 </div>
+                {% if cycle.goal_title != 'Default' %}
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-primary shadow h-100 py-2">
                         <div class="card-body">
@@ -69,6 +82,7 @@
                         </div>
                     </div>
                 </div>
+                {% endif %}
                 <div class="col-xl-3 col-md-6 mb-4">
                     <div class="card border-left-warning shadow h-100 py-2">
                         <div class="card-body">
@@ -108,13 +122,13 @@
                                            data-taskid="{{ task.id }}"
                                            data-tasktitle="{{ task.title }}"
                                            data-status="{{ task.status }}"
-                                           data-description = {{task.description}}
+                                           data-description = "{{task.description}}"
                                            data-projectid="{{ task.project.id }}"
                                            data-estimatedhours="{{ task.estimated_hours }}"
                                         ><b>{{ task.id }}</b> - {{ task.title }}</a></h6>
 
                                     <span style="background-color:{{task.project.color}}">{{task.project}}</span>
-                                    <span class="circle">{{task.estimated_hours}}h</span>
+                                    <span class="circle">{{task.estimated_hours | floatformat }}h</span>
                                     <div class="item" style="margin-top: 10px;">
                                         <a href="javascript:{document.getElementById('updatetask{{task.id}}').submit()}" class="btn btn-primary btn-circle btn-sm  float-right">
                                             <i class="fas fa-arrow-right"></i>

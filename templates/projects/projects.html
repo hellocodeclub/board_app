@@ -21,60 +21,63 @@
 
                <div class="col-lg-10">
                {% if projects %}
-                    {% for project in projects %}
+                    {% for project_group in projects_groups %}
                         <div class="card shadow mb-4">
                             <!-- Card Header - Accordion -->
                             <div class="d-block card-header py-3"
                                   data-toggle="collapse"  role="button" aria-expanded="true" aria-controls="collapseCardExample">
                                     <a class="m-0 font-weight-bold text-primary"
-                                       href="#project{{project.project.id}}"
+                                       href="#project{{project_group.project.id}}"
                                        data-toggle="modal" data-target="#createProjectModalCenter"
-                                       data-projectid ="{{ project.project.id }}"
-                                       data-projecttitle = "{{project.project.title}}"
-                                       data-projectcolor ="{{project.project.color}}"
-                                       data-projectdescription ="{{project.project.description}}"
+                                       data-projectid ="{{ project_group.project.id }}"
+                                       data-projecttitle = "{{project_group.project.title}}"
+                                       data-projectcolor ="{{project_group.project.color}}"
+                                       data-projectdescription ="{{project_group.project.description}}"
                                        role="button"
-                                    >{{project.project.title}}</a>
+                                    >{{project_group.project.title}}</a>
+                                    {% if project_group.project.title != 'Default' %}
                                     <span class="ml-3 dropdown no-arrow">
-                                        <a href="javascript:{document.getElementById('deleteproject{{project.project.id}}').submit()}" class="btn btn-primary btn-circle btn-sm">
+                                        <a href="javascript:{document.getElementById('deleteproject{{project_group.project.id}}').submit()}" class="btn btn-primary btn-circle btn-sm">
                                             <i class="far fa-trash-alt"></i>
                                         </a>
 
-                                        <form id="deleteproject{{project.project.id}}" action="{% url 'delete-project' %}" method="POST">
+                                        <form id="deleteproject{{project_group.project.id}}" action="{% url 'delete-project' %}" method="POST">
                                             {% csrf_token %}
-                                            <input name="project-id" value="{{project.project.id}}" type="hidden">
+                                            <input name="project-id" value="{{project_group.project.id}}" type="hidden">
                                         </form>
                                     </span>
+                                    {% endif %}
                             </div>
 
                             <!-- Card Content - Collapse -->
                             <div class="collapse show" id="collapseCardExample">
                                 <div class="card-body">
-                                {% if project.tasks %}
+                                {% if project_group.tasks %}
                                 <div class="col-lg-12">
                                     <h4 class="small font-weight-bold">State</h4>
                                     <div class="progress mb-4">
+                                        {% if project_group.status.open_tasks_hours > 0.00 %}
 
-                                        <div class="progress-bar bg-danger" role="progressbar" style="width:{{project.status.open_tasks_hours}}%" aria-valuenow="{{project.status.open_tasks_hours}}" aria-valuemin="0" aria-valuemax="100">{{project.status.open_tasks_hours}}%</div>
-
-                                        {% if project.status.ready_tasks_hours > 0 %}
-                                            <div class="progress-bar bg-warning" role="progressbar" style="width:{{project.status.ready_tasks_hours}}%">{{project.status.ready_tasks_hours}}%</div>
+                                            <div class="progress-bar bg-danger" role="progressbar" style="width:{{project_group.status.open_tasks_hours}}%" aria-valuenow="{{project_group.status.open_tasks_hours}}" aria-valuemin="0" aria-valuemax="100">{{project_group.status.open_tasks_hours}}%</div>
                                         {% endif %}
-                                        {% if project.status.in_progress_tasks_hours > 0 %}
-                                            <div class="progress-bar bg-primary" role="progressbar" style="width:{{project.status.in_progress_tasks_hours}}%">{{project.status.in_progress_tasks_hours}}%</div>
+                                        {% if project_group.status.ready_tasks_hours > 0.00 %}
+                                            <div class="progress-bar bg-warning" role="progressbar" style="width:{{project_group.status.ready_tasks_hours}}%">{{project_group.status.ready_tasks_hours}}%</div>
                                         {% endif %}
-                                        {% if project.status.test_tasks_hours > 0 %}
-                                            <div class="progress-bar bg-info" role="progressbar" style="width:{{project.status.test_tasks_hours}}%">{{project.status.test_tasks_hours}}%</div>
+                                        {% if project_group.status.in_progress_tasks_hours > 0.00 %}
+                                            <div class="progress-bar bg-primary" role="progressbar" style="width:{{project_group.status.in_progress_tasks_hours}}%">{{project_group.status.in_progress_tasks_hours}}%</div>
                                         {% endif %}
-                                        {% if project.status.done_tasks_hours > 0 %}
-                                            <div class="progress-bar bg-success" role="progressbar" style="width:{{project.status.done_tasks_hours}}%">{{project.status.done_tasks_hours}}%</div>
+                                        {% if project_group.status.test_tasks_hours > 0.00 %}
+                                            <div class="progress-bar bg-info" role="progressbar" style="width:{{project_group.status.test_tasks_hours}}%">{{project_group.status.test_tasks_hours}}%</div>
+                                        {% endif %}
+                                        {% if project_group.status.done_tasks_hours > 0.00 %}
+                                            <div class="progress-bar bg-success" role="progressbar" style="width:{{project_group.status.done_tasks_hours}}%">{{project_group.status.done_tasks_hours}}%</div>
                                         {% endif %}
                                     </div>
                                 </div>
                                 {% endif %}
                                 <div class="col-lg-10">
-                                    {% if project.tasks %}
-                                        {% for task in project.tasks %}
+                                    {% if project_group.tasks %}
+                                        {% for task in project_group.tasks %}
                                         <div class="card bg-info text-white shadow ">
                                             <div class="card-body less-padding">
                                                 <span class="text-m"><a class="text-white" href=""><b>{{task.id}}</b> - {{task.title}}</a></span>
@@ -83,7 +86,7 @@
                                                                          {% if task.status == 'IN_PROGRESS' %}bg-primary{% endif %}
                                                                          {% if task.status == 'TEST' %}bg-info{% endif %}
                                                                          {% if task.status == 'DONE' %}bg-success{% endif %}" >{{task.status}}</span>
-                                                <span class="circle float-right">{{task.estimated_hours}}h</span>
+                                                <span class="circle float-right">{{task.estimated_hours | floatformat }}h</span>
                                             </div>
                                         </div>
                                         {% endfor %}
@@ -110,7 +113,7 @@
                             <ul class="nav flex-column">
                                 <li class="nav-item">
                                     {% for project in projects %}
-                                        <a class="nav-link" href="#project{{project.project.id}}">{{project.project.title}}</a>
+                                        <a class="nav-link" href="#project{{project.id}}">{{project.title}}</a>
                                     {% endfor %}
                                 </li>
                             </ul>

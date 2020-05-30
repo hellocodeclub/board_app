@@ -7,6 +7,7 @@ urlpatterns = [
     path('save-task', views.save_task, name='save-task'),
     path('delete-task', views.delete_task, name='delete-task'),
     path('start-cycle', views.start_cycle, name='start-cycle'),
+    path('end-cycle', views.end_cycle, name='end-cycle'),
     path('create_notification', views.create_notification, name='create_notification'),
     path('tasks', views.tasks, name='tasks')
 ]

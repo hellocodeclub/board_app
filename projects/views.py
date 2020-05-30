@@ -11,9 +11,11 @@ from affilliateproducts.models import AffilliateProduct
 def projects(request):
     workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
     recommendations = AffilliateProduct.objects.all()
+    projects = Project.objects.all()
 
     context = {
-        'projects':get_projects_with_their_tasks(workspace_id),
+        'projects_groups':get_projects_with_their_tasks(workspace_id),
+        'projects': projects,
         'recommendations': recommendations
     }
     return render(request, 'projects/projects.html', context)
@@ -64,7 +66,7 @@ def get_projects_with_their_tasks(workspace_id):
     projects = Project.objects.filter(workspace= workspace_id).order_by('-updated_at')
 
     for project in projects:
-        tasks = Task.objects.filter(project=project)
+        tasks = Task.objects.filter(project=project).order_by('-updated_at')
         percentages_per_status = caclulate_status_percentages(project)
         project_with_tasks = {
             'project': project,
