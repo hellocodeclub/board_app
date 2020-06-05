@@ -20,8 +20,6 @@ def projects(request):
     }
     return render(request, 'projects/projects.html', context)
 
-def reports(request):
-    return render(request, 'projects/reports.html')
 
 @login_required(login_url='login')
 def save_project(request):

@@ -55,10 +55,13 @@ def end_activate_cycle(workspaceId):
     active_cycle.end_date = timezone.now()
     active_cycle.save()
 
+    workspace = Workspace.objects.filter(id= workspaceId)[0]
+
     #Calculate cycle duration
     cycle_duration = timezone.now() - active_cycle.start_date
     # Create the cycle history entry
     cycle_history_entry = CycleHistoryData(start_date=active_cycle.start_date, end_date=timezone.now(),
+                                           workspace=workspace,
                                            duration=cycle_duration, planned_hours=total_hours_in_cycle.get('hours'),
                                            done_hours=finished_hours.get('hours'))
     cycle_history_entry.save()

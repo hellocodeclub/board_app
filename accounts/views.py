@@ -58,7 +58,7 @@ def dashboard(request):
 
         workspace_id = request.session.get(SESSION_WORKSPACE_KEY_NAME)
         tasks_groups = get_list_tasks_by_status(workspace_id)
-        board_progress_summary = calculate_completed_hours()
+        board_progress_summary = calculate_completed_hours(workspace_id)
         projects = Project.objects.all()
         activate_cycle = get_active_cycle(workspace_id)
         number_open_tasks_not_on_board = get_pending_tasks_outside_board(workspace_id)

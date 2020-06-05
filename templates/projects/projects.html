@@ -80,13 +80,24 @@
                                         {% for task in project_group.tasks %}
                                         <div class="card bg-info text-white shadow ">
                                             <div class="card-body less-padding">
-                                                <span class="text-m"><a class="text-white" href=""><b>{{task.id}}</b> - {{task.title}}</a></span>
+                                                <span class="text-m">
+                                                    <a class="text-white" href="" data-toggle="modal" data-target="#createTaskModalCenter"
+                                                       data-taskid="{{ task.id }}"
+                                                       data-tasktitle="{{ task.title }}"
+                                                       data-status="{{ task.status }}"
+                                                       data-description = "{{task.description}}"
+                                                       data-projectid="{{ task.project.id }}"
+                                                       data-estimatedhours="{{ task.estimated_hours }}"
+                                                    >
+                                                            <b>{{task.id}}</b> - {{task.title}}
+                                                    </a>
+                                                </span>
                                                 <span class="float-right {% if task.status == 'OPEN' %}bg-danger{% endif %}
                                                                          {% if task.status == 'READY' %}bg-warning{% endif %}
                                                                          {% if task.status == 'IN_PROGRESS' %}bg-primary{% endif %}
                                                                          {% if task.status == 'TEST' %}bg-info{% endif %}
                                                                          {% if task.status == 'DONE' %}bg-success{% endif %}" >{{task.status}}</span>
-                                                <span class="circle float-right">{{task.estimated_hours | floatformat }}h</span>
+                                                <span class="circle mr-2 float-right">{{task.estimated_hours | floatformat }}h</span>
                                             </div>
                                         </div>
                                         {% endfor %}
